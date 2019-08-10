@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.infogrupo.loja.entity.Categoria;
 import com.infogrupo.loja.repository.CategoriaRepository;
+import com.infogrupo.loja.services.exception.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,6 +17,10 @@ public class CategoriaService {
 	public Categoria buscar(Integer id) {
 		
 		Categoria categorias = categoriaRepository.findOne(id); 
+		
+		if(categorias == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado! Id: " +id + ", Tipo: " +Categoria.class.getName());
+		}
 		
 		return categorias;
 	}
