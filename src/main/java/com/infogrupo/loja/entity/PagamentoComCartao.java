@@ -1,7 +1,10 @@
 package com.infogrupo.loja.entity;
 
+import javax.persistence.Entity;
+
 import com.infogrupo.loja.entity.enums.EstadoPagamento;
 
+@Entity
 public class PagamentoComCartao extends Pagamento{
 
 	/**

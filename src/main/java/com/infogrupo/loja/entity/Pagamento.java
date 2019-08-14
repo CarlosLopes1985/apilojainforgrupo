@@ -4,14 +4,20 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.infogrupo.loja.entity.enums.EstadoPagamento;
 
 @Entity
-public class Pagamento implements Serializable{
+@Inheritance(strategy=InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") //mapeamento com herança, cria umatabela para cada entidade
+public abstract class Pagamento implements Serializable{
 
 	/**
 	 * 
@@ -20,8 +26,9 @@ public class Pagamento implements Serializable{
 	
 	@Id
 	private Integer id;
-	private EstadoPagamento estado;
+	private Integer estado;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="pedido_id")
 	@MapsId // Garante o id seja o mesmo do pagamento
@@ -34,7 +41,7 @@ public class Pagamento implements Serializable{
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		super();
 		this.id = id;
-		this.estado = estado;
+		this.estado = estado.getCod();
 		this.pedido = pedido;
 	}
 
@@ -52,11 +59,11 @@ public class Pagamento implements Serializable{
 	}
 
 	public EstadoPagamento getEstado() {
-		return estado;
+		return EstadoPagamento.toEnum(estado);
 	}
 
 	public void setEstado(EstadoPagamento estado) {
-		this.estado = estado;
+		this.estado = estado.getCod();
 	}
 
 	public Pedido getPedido() {

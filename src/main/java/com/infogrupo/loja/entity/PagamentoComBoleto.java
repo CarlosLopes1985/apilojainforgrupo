@@ -2,8 +2,11 @@ package com.infogrupo.loja.entity;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import com.infogrupo.loja.entity.enums.EstadoPagamento;
 
+@Entity
 public class PagamentoComBoleto extends Pagamento{
 	
 	/**
