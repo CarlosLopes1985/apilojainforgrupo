@@ -42,6 +42,8 @@ public class Cliente implements Serializable {
 	@CollectionTable(name="TELEFONE")
 	private Set<String>telefones = new HashSet<String>();
 
+	private List<Pedido>pedidos = new ArrayList<Pedido>();
+	
 	public Cliente() {
 		super();
 	}
@@ -173,6 +175,14 @@ public class Cliente implements Serializable {
 	public String toString() {
 		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", cpfOuCnpj=" + cpfOuCnpj + ", tipo="
 				+ tipo + "]";
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 	
 }
