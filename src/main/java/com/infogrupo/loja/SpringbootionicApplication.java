@@ -13,6 +13,7 @@ import com.infogrupo.loja.entity.Cidade;
 import com.infogrupo.loja.entity.Cliente;
 import com.infogrupo.loja.entity.Endereco;
 import com.infogrupo.loja.entity.Estado;
+import com.infogrupo.loja.entity.ItemPedido;
 import com.infogrupo.loja.entity.Pagamento;
 import com.infogrupo.loja.entity.PagamentoComBoleto;
 import com.infogrupo.loja.entity.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.infogrupo.loja.repository.CidadeRepository;
 import com.infogrupo.loja.repository.ClienteRepository;
 import com.infogrupo.loja.repository.EnderecoRepository;
 import com.infogrupo.loja.repository.EstadoRepository;
+import com.infogrupo.loja.repository.ItemPedidoRepository;
 import com.infogrupo.loja.repository.PagamentoRepository;
 import com.infogrupo.loja.repository.PedidoRepository;
 import com.infogrupo.loja.repository.ProdutoRepository;
@@ -55,6 +57,9 @@ public class SpringbootionicApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootionicApplication.class, args);
@@ -239,6 +244,19 @@ public class SpringbootionicApplication implements CommandLineRunner {
 		
 		pedidoRepository.save(Arrays.asList(ped1, ped2));
 		pagamentoRepository.save(Arrays.asList(pagto1, pagto2));
+	
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+	
+		itemPedidoRepository.save(Arrays.asList(ip1,ip2,ip3));
 	}
 
 }
