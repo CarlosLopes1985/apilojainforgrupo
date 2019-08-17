@@ -1,10 +1,12 @@
 package com.infogrupo.loja.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.infogrupo.loja.entity.Categoria;
 import com.infogrupo.loja.repository.CategoriaRepository;
+import com.infogrupo.loja.services.exception.DataIntegrityException;
 import com.infogrupo.loja.services.exception.ObjectNotFoundException;
 
 @Service
@@ -34,5 +36,16 @@ public class CategoriaService {
 		buscar(obj.getId());
 		
 		return categoriaRepository.save(obj);
+	}
+
+	public void delete(Integer id) {
+		buscar(id);
+		
+		try {
+			categoriaRepository.delete(id);	
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir categorias que tenha produtos associados");	
+		}
+		
 	}
 }
