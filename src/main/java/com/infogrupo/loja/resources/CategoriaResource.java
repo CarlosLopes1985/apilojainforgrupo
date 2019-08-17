@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +28,9 @@ public class CategoriaResource {
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	@RequestMapping(value="/{idC}", method=RequestMethod.GET)
-	public ResponseEntity<?> findCategorias(@PathVariable Integer idC) {
-		Categoria obj  = categoriaService.buscar(idC);
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<?> findCategorias(@PathVariable Integer id) {
+		Categoria obj  = categoriaService.buscar(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
@@ -40,7 +42,9 @@ public class CategoriaResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){
+		
+		Categoria obj = categoriaService.fromDto(objDto);
 		
 		obj = categoriaService.insert(obj);
 		
@@ -51,7 +55,10 @@ public class CategoriaResource {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id){
+		
+		Categoria obj = categoriaService.fromDto(objDto);
+		
 		obj.setId(id);
 		obj = categoriaService.update(obj);
 		

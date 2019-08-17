@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.infogrupo.loja.dto.CategoriaDTO;
 import com.infogrupo.loja.entity.Categoria;
 import com.infogrupo.loja.repository.CategoriaRepository;
 import com.infogrupo.loja.services.exception.DataIntegrityException;
@@ -61,4 +62,7 @@ public class CategoriaService {
 		return categoriaRepository.findAll(pageRequest);
 	}
 	
+	public Categoria fromDto(CategoriaDTO obj) {
+		return new Categoria(obj.getId(), obj.getNome());
+	}
 }
