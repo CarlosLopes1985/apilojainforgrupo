@@ -1,6 +1,8 @@
 package com.infogrupo.loja.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.infogrupo.loja.dto.CategoriaDTO;
 import com.infogrupo.loja.entity.Categoria;
 import com.infogrupo.loja.services.CategoriaService;
 
@@ -25,6 +28,13 @@ public class CategoriaResource {
 	public ResponseEntity<?> findCategorias(@PathVariable Integer id) {
 		Categoria obj  = categoriaService.buscar(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAllCategorias() {
+		List<Categoria> list = categoriaService.findAll();
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

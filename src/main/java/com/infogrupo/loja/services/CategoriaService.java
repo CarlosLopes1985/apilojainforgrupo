@@ -1,5 +1,7 @@
 package com.infogrupo.loja.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -40,12 +42,15 @@ public class CategoriaService {
 
 	public void delete(Integer id) {
 		buscar(id);
-		
 		try {
 			categoriaRepository.delete(id);	
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir categorias que tenha produtos associados");	
 		}
+	}
+
+	public List<Categoria> findAll() {
 		
+		return categoriaRepository.findAll();
 	}
 }
